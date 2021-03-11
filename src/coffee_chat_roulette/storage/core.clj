@@ -1,5 +1,6 @@
 (ns coffee-chat-roulette.storage.core
-  (:require [coffee-chat-roulette.utils.file :as file]))
+  (:require [coffee-chat-roulette.utils.file :as file]
+            [coffee-chat-roulette.utils.map :refer [update-int]]))
 
 (def ^:private db-filename "db.edn")
 
@@ -20,12 +21,6 @@
   [f path & args]
   (apply swap! db f path args)
   (db-get path))
-
-(defn- update-int
-  "Updates an integer in a given map, function and path.
-  If value under path is 'nil', will first initialise with 0."
-  [map path f]
-  (assoc-in map path (f (get-in map path 0))))
 
 (defn- next-id
   "Returns the next id for a given entity (auto increment)."
