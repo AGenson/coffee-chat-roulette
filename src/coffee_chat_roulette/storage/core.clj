@@ -1,8 +1,14 @@
-(ns coffee-chat-roulette.storage.core)
+(ns coffee-chat-roulette.storage.core
+  (:require [coffee-chat-roulette.utils.file :as file]))
+
+(def ^:private db-filename "db.edn")
 
 (def ^:private db
-  "Atom representing the db."
-  (atom {}))
+  "Atom representing the db, first initialised from file.
+  A watcher function saves the db state in file every time it is updated."
+  (let [db-atom (atom (file/load db-filename))]
+    (add-watch db-atom :watcher (fn [_ _ _ new-state] (file/save db-filename new-state)))
+    db-atom))
 
 (defn- db-get
   "Returns fetched data from db given a path."
