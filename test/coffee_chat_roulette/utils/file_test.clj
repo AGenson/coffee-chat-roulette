@@ -38,4 +38,5 @@
           "Should return empty map when could not load from file"))
     (testing "when file exists"
       (is (= test-data1 (file/load test-filename1))
-          "Data loaded from file does not match original data"))))
+          "Data loaded from file does not match original data")))
+  (io/delete-file test-filename1))
